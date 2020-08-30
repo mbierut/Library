@@ -1,10 +1,15 @@
 package pl.mbierut.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "loans")
+@Getter
+@Setter
 public class Loan {
 
     @Id
@@ -29,5 +34,13 @@ public class Loan {
         this.book = book;
         this.user = user;
         this.loanDate = LocalDate.now();
+    }
+
+    public Loan() {
+        this.loanDate = LocalDate.now();
+    }
+
+    public void returnBook () {
+        this.setReturnDate(LocalDate.now());
     }
 }

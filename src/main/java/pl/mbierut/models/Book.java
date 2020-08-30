@@ -1,10 +1,14 @@
 package pl.mbierut.models;
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.mbierut.enums.BookStatus;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "books")
+@Getter
+@Setter
 public class Book {
 
     @Id
@@ -19,6 +23,11 @@ public class Book {
     private BookStatus status;
 
     public Book() {
+        this.status = BookStatus.IN_STOCK;
+    }
+
+    public Book(Title title) {
+        this.title = title;
         this.status = BookStatus.IN_STOCK;
     }
 }

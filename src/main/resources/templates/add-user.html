@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>New User</title>
+    <script src="/static/vue.js"></script>
 </head>
 <body>
-
+<form class="form-group" action="/users/add" method="post">
+    <input type="text" name="firstName"/>
+    <input type="text" name="lastName"/>
+    <input type="submit">
+</form>
 </body>
 </html>

@@ -2,17 +2,17 @@ package pl.mbierut.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.mbierut.models.Book;
+import pl.mbierut.models.Loan;
 import pl.mbierut.models.Title;
 import pl.mbierut.models.User;
 import pl.mbierut.repositories.BookRepository;
 import pl.mbierut.repositories.LoanRepository;
 import pl.mbierut.repositories.TitleRepository;
 import pl.mbierut.repositories.UserRepository;
+
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -37,78 +37,75 @@ public class MainController {
     // User
 
     @GetMapping("/users")
-    public String userHome() {
-        return "user";
+    public String userHome(Model model) {
+        List<User> userList = this.userRepository.findAll();
+        model.addAttribute("userList", userList);
+        return "user-list";
     }
 
-    @GetMapping("users/list")
-    public String userList() {
-        this.userRepository.findAll();
-        return "users";
-    }
-
-    @GetMapping("users/add")
-    public String addUser(Model model) {
-        model.addAttribute("user", new User());
+    @GetMapping("/users/add")
+    public String createNewUser() {
         return "add-user";
     }
 
-    @PostMapping("users/add")
-    public String addUser(@ModelAttribute User user) {
-        this.userRepository.save(user);
-        return "add-user";
+    @PostMapping("/users/add")
+    public String addNewUser(@RequestParam String firstName, @RequestParam String lastName) {
+        User newUser = new User(firstName, lastName);
+        this.userRepository.save(newUser);
+        return "redirect:.";
     }
 
 
     //Books
 
     @RequestMapping("/titles")
-    public String showTitles() {
-        this.titleRepository.findAll();
-        return "titles";
+    public String showTitles(Model model) {
+        List<Title> titleList = this.titleRepository.findAll();
+        model.addAttribute("titleList", titleList);
+        return "title-list";
     }
 
-    @GetMapping("titles/add")
-    public String addTitle(Model model) {
-        model.addAttribute("title", new Title());
+    @GetMapping("/titles/add")
+    public String createNewTitle() {
         return "add-title";
     }
 
-    @PostMapping("titles/add")
-    public String addTitle(@ModelAttribute Title title) {
-        this.titleRepository.save(title);
-        return "add-title";
+    @PostMapping("/titles/add")
+    public String addNewTitle(@RequestParam String title, @RequestParam String author, @RequestParam int year) {
+        Title newTitle = new Title(title, author, year);
+        this.titleRepository.save(newTitle);
+        return "redirect:.";
     }
 
-    @GetMapping("books")
+    @GetMapping("/books")
     public String showBooks() {
         this.bookRepository.findAll();
-        return "books";
+        return "book-list";
     }
 
-    @GetMapping("books/add")
-    public String addBook(Model model) {
-        model.addAttribute("book", new Book());
+    @GetMapping("/books/add")
+    public String createNewBook() {
         return "add-book";
     }
 
-    @PostMapping("books/add")
-    public String addBook(@ModelAttribute Book book) {
-        this.bookRepository.save(book);
-        return "redirect:./books";
+    @PostMapping("/books/add")
+    public String addNewBook(@RequestParam Title title) {
+        Book newBook = new Book(title);
+        this.bookRepository.save(newBook);
+        return "redirect:.";
     }
 
-    @GetMapping("books/change-status")
+    @GetMapping("/books/change-status")
     public String changeBookStatus(Long id, Model model) {
         Book book = this.bookRepository.findById(id).get();
         model.addAttribute("book", book);
         return "change-book-status";
     }
 
-    @PostMapping("books/change-status")
+    @PostMapping("/books/change-status")
     public String updateArticle(@ModelAttribute Book book) {
         this.bookRepository.save(book);
-        return "redirect:./books";
+        return "redirect:.";
     }
 
 
@@ -117,17 +114,26 @@ public class MainController {
     @GetMapping("/loans")
     public String showLoans() {
         this.loanRepository.findAll();
-        return "loans";
+        return "loan-list";
     }
 
     @GetMapping("/loans/loan-book")
-    public String loanBook() {
+    public String createNewLoan() {
+        return "loan-book";
+    }
+
+    @PostMapping
+    public String loanBook(@RequestParam Book book, @RequestParam User user) {
+        Loan newLoan = new Loan(book, user);
+        this.loanRepository.save(newLoan);
         return "loan-book";
     }
 
     @GetMapping("/loans/return-book")
-    public String returnBook() {
-        return "redirect:./loans";
+    public String returnBook(Long id) {
+        Loan loan = this.loanRepository.findById(id).get();
+        loan.returnBook();
+        return "redirect:.";
     }
 
 

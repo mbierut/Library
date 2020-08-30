@@ -1,9 +1,14 @@
 package pl.mbierut.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "titles")
+@Getter
+@NoArgsConstructor
 public class Title {
 
     @Id
@@ -18,4 +23,10 @@ public class Title {
 
     @Column(name = "year", nullable = false)
     private int year;
+
+    public Title(String title, String author, int year) {
+        this.title = title;
+        this.author = author;
+        this.year = year;
+    }
 }
