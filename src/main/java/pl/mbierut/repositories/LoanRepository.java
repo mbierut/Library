@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     List<Loan> findAllByReturnDateNull();
-    Loan findById(long id);
 }

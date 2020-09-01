@@ -3,6 +3,7 @@ package pl.mbierut.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pl.mbierut.enums.BookStatus;
 import pl.mbierut.models.Book;
 import pl.mbierut.models.Loan;
 import pl.mbierut.models.Title;
@@ -30,7 +31,7 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String sendHome() {
+    public String index() {
         return "index";
     }
 
@@ -71,69 +72,97 @@ public class MainController {
     }
 
     @PostMapping("/titles/add")
-    public String addNewTitle(@RequestParam String title, @RequestParam String author, @RequestParam int year) {
+    public String addNewTitle(@RequestParam String title, @RequestParam String author, @RequestParam String year) {
         Title newTitle = new Title(title, author, year);
         this.titleRepository.save(newTitle);
         return "redirect:.";
     }
 
     @GetMapping("/books")
-    public String showBooks() {
-        this.bookRepository.findAll();
+    public String showBooks(Model model) {
+        List<Book> bookList = this.bookRepository.findAll();
+        model.addAttribute("bookList", bookList);
         return "book-list";
     }
 
-    @GetMapping("/books/add")
+    @GetMapping("/books/title-search")
     public String createNewBook() {
-        return "add-book";
+        return "title-search";
+    }
+
+    @PostMapping("/books/title-search")
+    public String chooseTitleList(@RequestParam String title, @RequestParam String author, Model model) {
+        List<Title> titleList = this.titleRepository.findTitlesByTitleContainingAndAuthorContaining(title, author);
+        model.addAttribute("titleList", titleList);
+        return "title-list";
     }
 
     @PostMapping("/books/add")
-    public String addNewBook(@RequestParam Title title) {
+    public String addNewBook(@RequestParam Long id) {
+        Title title = this.titleRepository.getOne(id);
         Book newBook = new Book(title);
         this.bookRepository.save(newBook);
         return "redirect:.";
     }
 
-    @GetMapping("/books/change-status")
-    public String changeBookStatus(Long id, Model model) {
-        Book book = this.bookRepository.findById(id).get();
-        model.addAttribute("book", book);
-        return "change-book-status";
-    }
-
-    @PostMapping("/books/change-status")
-    public String updateArticle(@ModelAttribute Book book) {
-        this.bookRepository.save(book);
-        return "redirect:.";
+    @GetMapping("/books/change-status/{id}")
+    public String changeBookStatus(@PathVariable Long id, @RequestParam String status, Model model) {
+        if (this.bookRepository.findById(id).isPresent()) {
+            Book book = this.bookRepository.findById(id).get();
+            book.setStatus(BookStatus.valueOf(status));
+            return "redirect:..";
+        }
+        return "error";
     }
 
 
     //Loans
 
     @GetMapping("/loans")
-    public String showLoans() {
-        this.loanRepository.findAll();
+    public String showLoans(Model model) {
+        List<Loan> loanList = this.loanRepository.findAllByReturnDateNull();
+        model.addAttribute("loanList", loanList);
+        return "loan-list";
+    }
+
+    @GetMapping("loans/history")
+    public String showLoanHistory(Model model) {
+        List<Loan> loanList = this.loanRepository.findAll();
+        model.addAttribute("loanList", loanList);
         return "loan-list";
     }
 
     @GetMapping("/loans/loan-book")
-    public String createNewLoan() {
+    public String createNewLoan(Model model) {
+        List<Book> bookList = this.bookRepository.findBooksByStatus(BookStatus.IN_STOCK);
+        List<User> userList = this.userRepository.findAll();
+        model.addAttribute("bookList", bookList).addAttribute("userList", userList);
         return "loan-book";
     }
 
-    @PostMapping
-    public String loanBook(@RequestParam Book book, @RequestParam User user) {
-        Loan newLoan = new Loan(book, user);
-        this.loanRepository.save(newLoan);
-        return "loan-book";
+    @PostMapping("/loans/loan-book")
+    public String loanBook(@RequestParam Long bookId, @RequestParam Long userId) {
+        if (this.bookRepository.findById(bookId).isPresent() && this.bookRepository.findById(bookId).isPresent()) {
+            Book book = this.bookRepository.findById(bookId).get();
+            User user = this.userRepository.findById(userId).get();
+            book.setStatus(BookStatus.CHECKED_OUT);
+            this.bookRepository.save(book);
+            Loan newLoan = new Loan(book, user);
+            this.loanRepository.save(newLoan);
+            return "redirect:.";
+        }
+        return "error";
     }
 
     @GetMapping("/loans/return-book")
-    public String returnBook(Long id) {
+    public String returnBook(@RequestParam Long id) {
         Loan loan = this.loanRepository.findById(id).get();
         loan.returnBook();
-        return "redirect:.";
+        Book book = loan.getBook();
+        book.setStatus(BookStatus.IN_STOCK);
+        this.loanRepository.save(loan);
+        this.bookRepository.save(book);
+        return "redirect:..";
     }
 
 

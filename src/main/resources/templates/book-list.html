@@ -1,11 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Book list</title>
-    <script src="/static/vue.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
-
+<div>
+    <table class="table">
+        <tr>
+            <td>Book Id</td>
+            <td>Title</td>
+            <td>Current status</td>
+        </tr>
+        <tr th:each="book: ${bookList}">
+            <td th:text="${book.id}"></td>
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.status}"></td>
+        </tr>
+    </table>
+</div>
+<div><a href="/books/title-search">Add a book</a>
+    <a href="/"> Return home</a></div>
 </body>
 </html>

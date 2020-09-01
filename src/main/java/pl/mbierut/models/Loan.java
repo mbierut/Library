@@ -2,6 +2,7 @@ package pl.mbierut.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.mbierut.enums.BookStatus;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 public class Loan {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
@@ -40,7 +41,7 @@ public class Loan {
         this.loanDate = LocalDate.now();
     }
 
-    public void returnBook () {
+    public void returnBook() {
         this.setReturnDate(LocalDate.now());
     }
 }

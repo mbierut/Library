@@ -1,11 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Loan list</title>
-    <script src="/static/vue.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
-
+<div>
+    <table>
+        <tr th:each="loan: ${loanList}">
+            <td th:text="${loan.book}"></td>
+            <td th:text="${loan.user}"></td>
+            <td th:text="${loan.loanDate}"></td>
+            <td th:text="${loan.returnDate}"></td>
+            <td>
+                <form class="form-group" action="/loans/return-book" method="post">
+                    <button type="submit" name="id" th:value="${loan.id}">Return this book</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+<div><a href="/loans/loan-book">Loan book</a>
+    <a href="/"> Return home</a></div>
 </body>
 </html>

@@ -1,11 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title list</title>
     <script src="/static/vue.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
-
+<div>
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <td>Title Id</td>
+            <td>Title</td>
+            <td>Author</td>
+            <td>Published</td>
+        </tr>
+        </thead>
+        <tr th:each="title: ${titleList}">
+            <td th:text="${title.id}"></td>
+            <td th:text="${title.title}"></td>
+            <td th:text="${title.author}"></td>
+            <td th:text="${title.year}"></td>
+            <td>
+                <form class="form-group" action="/books/add" method="post">
+                    <button type="submit" name="id" th:value="${title.id}">Add a new copy</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+<div><a href="/titles/add">Add a title</a>
+    <a href="/"> Return home</a></div>
 </body>
 </html>

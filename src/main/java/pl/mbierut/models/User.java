@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "first_name", nullable = false)
@@ -31,5 +31,10 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.accountCreationDate = LocalDate.now();
+    }
+
+    @Override
+    public String toString() {
+        return this.firstName + " " + this.lastName + " created on " + this.accountCreationDate;
     }
 }

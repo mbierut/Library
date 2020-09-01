@@ -1,11 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Book loan</title>
-    <script src="/static/vue.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
+<div>
+    <form class="form-group" action="/loans/loan-book" method="post">
+        <select id="bookId" name="bookId">
+            <option th:each="book : ${bookList}" th:value="${book.id}" th:text="${book.title}">
+            </option>
+        </select>
+        <select id="userId" name="userId">
+            <option th:each="user : ${userList}" th:value="${user.id}" th:text="${user}">
+        </select>
+        <input type="submit" value="Loan a book">
+    </form>
+</div>
+
+
+<!--<div>-->
+<!--    <form action="/loans/loan-book" method="post">-->
+<!--    <input list="books" id="books">-->
+<!--    <datalist id="bookList">-->
+<!--        <option th:each="book: ${bookList}" th:value="${book.id}" th:label="${book.title}">-->
+<!--    </datalist>-->
+<!--    </form>-->
+<!--</div>-->
+
+<!--<form th:action="#{/}" method="POST" th:object="${example}">-->
+<!--    <div class="form-group">-->
+<!--        <input list="names" class="form-control" id="nameinput" th:field="${example.num.id}"> </input>-->
+<!--        <datalist id="names">-->
+<!--            <option th:each="row : ${namelist}" th:value="${row.id}" th:label="${row.name}">-->
+<!--        </datalist>-->
+<!--        <button>submit</button>-->
+<!--    </div>-->
+<!--</form>-->
 
 </body>
 </html>

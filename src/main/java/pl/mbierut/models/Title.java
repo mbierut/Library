@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Title {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "title", nullable = false)
@@ -22,11 +22,16 @@ public class Title {
     private String author;
 
     @Column(name = "year", nullable = false)
-    private int year;
+    private String year;
 
-    public Title(String title, String author, int year) {
+    public Title(String title, String author, String year) {
         this.title = title;
         this.author = author;
         this.year = year;
+    }
+
+    @Override
+    public String toString() {
+        return "\"" + this.title + "\" by " + this.author + " (" + this.year + ")";
     }
 }

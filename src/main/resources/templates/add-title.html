@@ -3,9 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>New Title</title>
-    <script src="/static/vue.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
-
+<div class="container-fluid">
+    <div class="card-header">Add a new title:</div>
+    <form class="form-group" action="/titles/add" method="post">
+        <div class="card">
+            <input type="text" name="title"/>Title
+        </div>
+        <div class="card">
+            <input type="text" name="author"/>Author
+        </div>
+        <div class="card">
+            <input type="number" min="0" name="year">Year of publication
+        </div>
+        <div class="card">
+            <input type="submit" value="Submit" class="btn-light">
+        </div>
+    </form>
+</div>
 </body>
 </html>

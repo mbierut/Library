@@ -3,6 +3,7 @@ package pl.mbierut.models;
 import lombok.Getter;
 import lombok.Setter;
 import pl.mbierut.enums.BookStatus;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,7 +13,7 @@ import javax.persistence.*;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
@@ -29,5 +30,10 @@ public class Book {
     public Book(Title title) {
         this.title = title;
         this.status = BookStatus.IN_STOCK;
+    }
+
+    @Override
+    public String toString() {
+        return this.title.toString() + " " + this.status;
     }
 }
