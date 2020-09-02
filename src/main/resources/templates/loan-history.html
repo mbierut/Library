@@ -11,12 +11,14 @@
     <div id="content-wrap">
         <div>
             <table class="table">
+                <thead>
                 <tr>
                     <td>Book</td>
                     <td>User</td>
                     <td>Date of loan</td>
                     <td>Date of return</td>
                 </tr>
+                </thead>
                 <tr th:each="loan: ${loanList}">
                     <td th:text="${loan.book}"></td>
                     <td th:text="${loan.user}"></td>
@@ -26,15 +28,19 @@
             </table>
         </div>
         <div>
-            <button onclick="location.href='/loans/' " type="button" class="btn btn-light">Current Loans</button>
-            <button onclick="location.href='/loans/loan-book' " type="button" class="btn btn-light">Loan book</button>
+            <button onclick="location.href='http://localhost:8080/loans/' " type="button" class="btn btn-light">Current
+                Loans
+            </button>
+            <button onclick="location.href='http://localhost:8080/loans/loan-book' " type="button"
+                    class="btn btn-light">Loan book
+            </button>
         </div>
     </div>
     <footer id="footer">
-        <button onclick="location.href='./users' " type="button" class="btn btn-info">Users</button>
-        <button onclick="location.href='./titles'" type="button" class="btn btn-info">Titles</button>
-        <button onclick="location.href='./books'" type="button" class="btn btn-info">Books</button>
-        <button onclick="location.href='./' " type="button" class="btn btn-info">Home</button>
+        <button onclick="location.href='http://localhost:8080/users' " type="button" class="btn btn-info">Users</button>
+        <button onclick="location.href='http://localhost:8080/titles'" type="button" class="btn btn-info">Titles</button>
+        <button onclick="location.href='http://localhost:8080/books'" type="button" class="btn btn-info">Books</button>
+        <button onclick="location.href='http://localhost:8080/' " type="button" class="btn btn-info">Home</button>
     </footer>
 </div>
 </body>

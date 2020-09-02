@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "titles")
@@ -16,12 +17,15 @@ public class Title {
     private long id;
 
     @Column(name = "title", nullable = false)
+    @NotBlank
     private String title;
 
     @Column(name = "author", nullable = false)
+    @NotBlank
     private String author;
 
     @Column(name = "year", nullable = false)
+
     private String year;
 
     public Title(String title, String author, String year) {

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -18,10 +19,12 @@ public class Loan {
 
     @ManyToOne
     @JoinColumn(name = "books_id")
+    @NotNull(message = "Must choose a book")
     private Book book;
 
     @ManyToOne
     @JoinColumn(name = "users_id")
+    @NotNull(message = "Must choose a user")
     private User user;
 
     @Column(name = "loan_date", nullable = false)
