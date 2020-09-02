@@ -2,7 +2,6 @@ package pl.mbierut.models;
 
 import lombok.Getter;
 import lombok.Setter;
-import pl.mbierut.enums.BookStatus;
 
 import javax.persistence.*;
 import java.time.LocalDate;

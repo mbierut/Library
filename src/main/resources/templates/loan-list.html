@@ -2,26 +2,47 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Loan list</title>
+    <title>Current Loan List</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 <div>
-    <table>
-        <tr th:each="loan: ${loanList}">
-            <td th:text="${loan.book}"></td>
-            <td th:text="${loan.user}"></td>
-            <td th:text="${loan.loanDate}"></td>
-            <td th:text="${loan.returnDate}"></td>
-            <td>
-                <form class="form-group" action="/loans/return-book" method="post">
-                    <button type="submit" name="id" th:value="${loan.id}">Return this book</button>
-                </form>
-            </td>
-        </tr>
-    </table>
+    <div id="page-container">
+        <div id="content-wrap">
+            <table class="table">
+                <tr>
+                    <td>Book</td>
+                    <td>User</td>
+                    <td>Date of loan</td>
+                    <td>Date of return</td>
+                </tr>
+                <tr th:each="loan: ${loanList}">
+                    <td th:text="${loan.book}"></td>
+                    <td th:text="${loan.user}"></td>
+                    <td th:text="${loan.loanDate}"></td>
+                    <td th:text="${loan.returnDate}"></td>
+                    <td>
+                        <form class="form-group" action="/loans/return-book" method="post">
+                            <button type="submit" name="id" th:value="${loan.id}" class="btn btn-primary btn-sm">Return
+                                this book
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <button onclick="location.href='/loans/' " type="button" class="btn btn-light">Current Loans</button>
+            <button onclick="location.href='/loans/loan-history' " type="button" class="btn btn-light">Loan book</button>
+        </div>
+    </div>
+    <footer id="footer">
+        <button onclick="location.href='./users' " type="button" class="btn btn-info">Users</button>
+        <button onclick="location.href='./titles'" type="button" class="btn btn-info">Titles</button>
+        <button onclick="location.href='./books'" type="button" class="btn btn-info">Books</button>
+        <button onclick="location.href='./' " type="button" class="btn btn-info">Home</button>
+    </footer>
 </div>
-<div><a href="/loans/loan-book">Loan book</a>
-    <a href="/"> Return home</a></div>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User List</title>
+    <title>Loan History</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
@@ -12,26 +12,28 @@
         <div>
             <table class="table">
                 <tr>
-                    <td>User Id</td>
-                    <td scope="2">User name</td>
-                    <td>Account created on</td>
+                    <td>Book</td>
+                    <td>User</td>
+                    <td>Date of loan</td>
+                    <td>Date of return</td>
                 </tr>
-                <tr th:each="user: ${userList}">
-                    <td th:text="${user.id}"></td>
-                    <td th:text="${user.firstName}"></td>
-                    <td th:text="${user.lastName}"></td>
-                    <td th:text="${user.accountCreationDate}"></td>
+                <tr th:each="loan: ${loanList}">
+                    <td th:text="${loan.book}"></td>
+                    <td th:text="${loan.user}"></td>
+                    <td th:text="${loan.loanDate}"></td>
+                    <td th:text="${loan.returnDate}"></td>
                 </tr>
             </table>
         </div>
         <div>
-            <button onclick="location.href='users/add'" type="button" class="btn btn-info">Add User</button>
+            <button onclick="location.href='/loans/' " type="button" class="btn btn-light">Current Loans</button>
+            <button onclick="location.href='/loans/loan-book' " type="button" class="btn btn-light">Loan book</button>
         </div>
     </div>
     <footer id="footer">
+        <button onclick="location.href='./users' " type="button" class="btn btn-info">Users</button>
         <button onclick="location.href='./titles'" type="button" class="btn btn-info">Titles</button>
         <button onclick="location.href='./books'" type="button" class="btn btn-info">Books</button>
-        <button onclick="location.href='./loans'" type="button" class="btn btn-info">Loans</button>
         <button onclick="location.href='./' " type="button" class="btn btn-info">Home</button>
     </footer>
 </div>

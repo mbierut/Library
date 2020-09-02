@@ -106,7 +106,7 @@ public class MainController {
     }
 
     @GetMapping("/books/change-status/{id}")
-    public String changeBookStatus(@PathVariable Long id, @RequestParam String status, Model model) {
+    public String changeBookStatus(@PathVariable Long id, @RequestParam String status) {
         if (this.bookRepository.findById(id).isPresent()) {
             Book book = this.bookRepository.findById(id).get();
             book.setStatus(BookStatus.valueOf(status));
@@ -129,7 +129,7 @@ public class MainController {
     public String showLoanHistory(Model model) {
         List<Loan> loanList = this.loanRepository.findAll();
         model.addAttribute("loanList", loanList);
-        return "loan-list";
+        return "loan-history";
     }
 
     @GetMapping("/loans/loan-book")
@@ -142,7 +142,7 @@ public class MainController {
 
     @PostMapping("/loans/loan-book")
     public String loanBook(@RequestParam Long bookId, @RequestParam Long userId) {
-        if (this.bookRepository.findById(bookId).isPresent() && this.bookRepository.findById(bookId).isPresent()) {
+        if (this.bookRepository.findById(bookId).isPresent() && this.userRepository.findById(userId).isPresent()) {
             Book book = this.bookRepository.findById(bookId).get();
             User user = this.userRepository.findById(userId).get();
             book.setStatus(BookStatus.CHECKED_OUT);
@@ -154,15 +154,18 @@ public class MainController {
         return "error";
     }
 
-    @GetMapping("/loans/return-book")
+    @PostMapping("/loans/return-book")
     public String returnBook(@RequestParam Long id) {
-        Loan loan = this.loanRepository.findById(id).get();
-        loan.returnBook();
-        Book book = loan.getBook();
-        book.setStatus(BookStatus.IN_STOCK);
-        this.loanRepository.save(loan);
-        this.bookRepository.save(book);
-        return "redirect:..";
+        if (this.loanRepository.findById(id).isPresent()) {
+            Loan loan = this.loanRepository.findById(id).get();
+            loan.returnBook();
+            Book book = loan.getBook();
+            book.setStatus(BookStatus.IN_STOCK);
+            this.loanRepository.save(loan);
+            this.bookRepository.save(book);
+            return "redirect:.";
+        }
+        return "error";
     }
 
 

@@ -1,15 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>New User</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
-<form class="form-group" action="/users/add" method="post">
-    <input type="text" name="firstName"/>
-    <input type="text" name="lastName"/>
-    <input type="submit">
-</form>
+<div id="page-container">
+    <div id="content-wrap">
+        <form action="/users/add" method="post">
+            <div class="h4">Add a new user</div>
+            <div class="form-group-row">
+                <input type="text" name="firstName" id="firstName"/>
+                <label for="firstName">First name</label>
+            </div>
+            <div class="form-group-row">
+                <input type="text" name="lastName" id="lastName"/>
+                <label for="lastName">Last name</label>
+            </div>
+            <div class="form-group-row">
+                <input type="submit" value="Submit" class="btn btn-light">
+            </div>
+        </form>
+    </div>
+    <footer id="footer">
+        <button onclick="location.href='./' " type="button" class="btn btn-info">Users</button>
+        <button onclick="location.href='../titles'" type="button" class="btn btn-info">Titles</button>
+        <button onclick="location.href='../books'" type="button" class="btn btn-info">Books</button>
+        <button onclick="location.href='../loans'" type="button" class="btn btn-info">Loans</button>
+        <button onclick="location.href='../' " type="button" class="btn btn-info">Home</button>
+    </footer>
+</div>
 </body>
 </html>
